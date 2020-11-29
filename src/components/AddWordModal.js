@@ -2,16 +2,19 @@ import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, TextInput, Keyboard } from 'react-native'
 import { Overlay, Button } from 'react-native-elements'
 import api from '../api'
-import { UserContext } from '../contexes/UserContext'
+import { UserContext } from '../contexts/UserContext'
+import { WordContext, WordDispatchContext } from '../contexts/WordContext'
 
 const FIELDS_EMPTY = 'Please fill all fields'
 
-export default ({ setShowAddWordModal, setWords, words }) => {
+export default ({ setShowAddWordModal }) => {
   const [turkish, setTurkish] = useState('')
   const [english, setEnglish] = useState('')
   const [wordAdding, setWordAdding] = useState(false)
   const [wordAddError, setWordAddError] = useState('')
   const user = useContext(UserContext)
+  const words = useContext(WordContext)
+  const wordDispatch = useContext(WordDispatchContext)
 
   const handleWordAdd = async () => {
     Keyboard.dismiss()
@@ -26,7 +29,7 @@ export default ({ setShowAddWordModal, setWords, words }) => {
         tr: turkish,
         en: english
       })
-      setWords([...words, response.data])
+      wordDispatch([...words, response.data])
     } catch (err) {
       console.log(err)
     } finally {

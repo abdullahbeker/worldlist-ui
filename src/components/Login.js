@@ -10,10 +10,9 @@ import {
 } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import api from '../api'
-import { UserDispatchContext } from '../contexes/UserContext'
+import { UserDispatchContext } from '../contexts/UserContext'
 import AsyncStorage from '@react-native-community/async-storage'
 
-const USERNAME_TAKEN = 'This username is already taken'
 const USERNAME_EMPTY = 'Please provide a username'
 
 export default () => {
@@ -30,20 +29,13 @@ export default () => {
     }
     try {
       setLoading(true)
-      const response = await api.post('/users/', { name: username })
-      const { user } = response.data
-      const { _id, name } = user
-      const _user = {
-        id: _id,
-        username: name
-      }
-      AsyncStorage.setItem('@user', JSON.stringify(_user)).catch(err =>
+      await api.post('/users/', { name: username })
+      AsyncStorage.setItem('@user', JSON.stringify({ username })).catch(err =>
         console.log(err)
       )
-      userDispatch(_user)
+      userDispatch({ username })
     } catch (err) {
-      if (err.response.status === 400) setErrorMessage(USERNAME_TAKEN)
-    } finally {
+      console.log(err)
       setLoading(false)
     }
   }

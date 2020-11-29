@@ -1,13 +1,16 @@
 import React from 'react'
 import Main from './src/Main'
 import { StatusBar } from 'expo-status-bar'
-import UserContext from './src/contexes/UserContext'
+import UserContext from './src/contexts/UserContext'
+import WordContext from './src/contexts/WordContext'
 
-export default function App() {
+export default () => {
   return (
     <UserContext>
-      <Main />
-      <StatusBar style='auto' />
+      <WordContext>
+        <Main />
+        <StatusBar style='auto' />
+      </WordContext>
     </UserContext>
   )
 }
